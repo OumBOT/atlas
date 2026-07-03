@@ -28,5 +28,11 @@ api:           ## backend en développement (http://localhost:$(API_PORT), surch
 api-install:   ## crée le venv backend et installe les dépendances
 	cd apps/api && python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
+migrate:       ## applique les migrations de schéma
+	cd apps/api && .venv/bin/alembic upgrade head
+
+seed:          ## charge les 3 territoires de démonstration
+	cd apps/api && .venv/bin/python -m atlas.infrastructure.db.seed_territories
+
 test:          ## tests backend
 	cd apps/api && .venv/bin/pytest -q

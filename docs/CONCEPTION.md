@@ -534,4 +534,5 @@ Journal :
 - **T-003** · Scaffold frontend — ✅ validée (testée sur Mac)
 - **T-004** · Scaffold backend — ✅ validée (health ok sur Mac)
 - **T-005** · Design tokens — ✅ validée (vérifiée sur Mac)
-- **T-006** · CI GitHub Actions — livrée, en attente de validation
+- **T-006** · CI GitHub Actions — ✅ validée (verte sur GitHub)
+- **T-007** · Seeds des 3 territoires — livrée, en attente de validation
