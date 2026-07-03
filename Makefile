@@ -21,8 +21,9 @@ db-shell:      ## console psql dans la base atlas
 web:           ## frontend en développement (http://localhost:5173)
 	cd apps/web && pnpm dev
 
-api:           ## backend en développement (http://localhost:8000)
-	cd apps/api && .venv/bin/uvicorn atlas.presentation.app:app --reload
+API_PORT ?= 8000
+api:           ## backend en développement (http://localhost:$(API_PORT), surcharger : make api API_PORT=8010)
+	cd apps/api && .venv/bin/uvicorn atlas.presentation.app:app --reload --port $(API_PORT)
 
 api-install:   ## crée le venv backend et installe les dépendances
 	cd apps/api && python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
