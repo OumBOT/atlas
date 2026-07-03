@@ -541,4 +541,5 @@ Journal :
 - **T-010** · GlassPanel (2 niveaux, état thinking) — livrée
 - **T-011** · Button (primary/ghost/subtle, lueur au contact) — livrée
 - **T-012** · MetricTile (Fraunces count-up) — livrée
-- **T-013** · Galerie /design v2 (atmosphère : grain, vignette, poussière, lumière-curseur, tilt) — livrée, en attente de validation visuelle
+- **T-013** · Galerie /design v2 (atmosphère) — ✅ validée (option A : nuit + rapports papier, ADR-004)
+- **T-014** · CommandBar ⌘K (navigation clavier, filtrage accent-insensible, monde qui s'incline) — livrée

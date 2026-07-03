@@ -1,10 +1,31 @@
 /**
  * ATLAS — racine applicative.
  * Le seuil et la cinématique arrivent avec l'épic E2 ; en attendant,
- * /design expose la galerie du design system pour validation visuelle.
+ * /design expose la galerie et ⌘K la palette de commandes.
  */
+import { CommandBar, MeridianLine } from '@/design-system'
+import type { CommandItem } from '@/design-system'
 import { DesignGallery } from '@/features/design-gallery/DesignGallery'
-import { MeridianLine } from '@/design-system'
+
+/** Items de la palette — les territoires s'ouvriront réellement en E3. */
+const COMMANDS: CommandItem[] = [
+  { id: 'cmd-saint-denis', icon: '◈', label: 'Ouvrir Saint-Denis', hint: 'E3', disabled: true },
+  { id: 'cmd-milly', icon: '◈', label: 'Ouvrir Milly-la-Forêt', hint: 'E3', disabled: true },
+  { id: 'cmd-saint-malo', icon: '◈', label: 'Ouvrir Saint-Malo', hint: 'E3', disabled: true },
+  {
+    id: 'cmd-design',
+    icon: '✦',
+    label: 'Design system',
+    hint: '/design',
+    onSelect: () => window.location.assign('/design'),
+  },
+  {
+    id: 'cmd-home',
+    icon: '○',
+    label: 'Retour au seuil',
+    onSelect: () => window.location.assign('/'),
+  },
+]
 
 function Threshold() {
   return (
@@ -12,18 +33,21 @@ function Threshold() {
       <h1 className="font-display text-2xl font-light tracking-[0.3em] text-ink-1">ATLAS</h1>
       <MeridianLine className="w-40" />
       <p className="text-2xs uppercase tracking-[0.35em] text-ink-3">Territory Intelligence</p>
-      {import.meta.env.DEV && (
-        <a href="/design" className="mt-6 text-xs text-ink-3 underline-offset-4 hover:underline">
-          design system →
-        </a>
-      )}
+      <p className="mt-6 text-xs text-ink-3">
+        <kbd className="rounded border border-stroke-faint px-1.5 py-0.5 font-mono">⌘K</kbd> pour
+        commencer
+      </p>
     </main>
   )
 }
 
 function App() {
-  if (window.location.pathname === '/design') return <DesignGallery />
-  return <Threshold />
+  return (
+    <>
+      {window.location.pathname === '/design' ? <DesignGallery /> : <Threshold />}
+      <CommandBar items={COMMANDS} />
+    </>
+  )
 }
 
 export default App
