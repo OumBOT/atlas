@@ -600,3 +600,22 @@ Cette conception s'implémentera à travers les épics existants (E1 design syst
 3. **E10 intègre le moteur audio à stems** (4 pistes par morceau, mixeur d'états) — production musicale externalisée (bibliothèques sous licence ou génération) mais *spécifiée* par le §7.
 
 Aucune ligne de code n'est écrite. **En attente de ta validation** — ou de tes amendements sur : la signature Méridien, le choix Fraunces, le thème musical à 5 notes, la doctrine mobile "Compagnon", et les 3 piliers (moments 8, 16, 20).
+
+---
+
+# 2.8 LE PAPIER — LANGAGE DES LIVRABLES (ADR-004)
+
+L'instrument est nocturne ; ce qu'il produit est papier. Les rapports,
+exports PDF et StoryMaps quittent la nuit pour un langage éditorial :
+
+```
+--paper:          #F7F5F0   fond (blanc cassé chaud, jamais #FFF)
+--paper-ink:      #1C1D21   texte
+--paper-ink-2:    #6B6E76   secondaire
+--paper-beam:     #3D68E0   le Méridien devenu filet de section (0,75 pt)
+--paper-warm:     #B8863B   dorures rares (numéros de page, lettrines)
+```
+
+Typographie identique (Fraunces / Inter / Plex Mono) — c'est la même
+voix, sur un autre support. La composition du rapport (E10) met en
+scène la bascule : les panneaux de nuit "s'impriment" en pages claires.
