@@ -1,0 +1,101 @@
+# ATLAS — Environnement de développement
+# PostGIS + pgvector · Redis · martin (tuiles vectorielles) · Ollama (LLM local)
+#
+# Démarrage :   docker compose -f infra/docker-compose.yml up -d
+# Arrêt :       docker compose -f infra/docker-compose.yml down
+# Reset total : docker compose -f infra/docker-compose.yml down -v
+#
+# Variables : copier infra/.env.example vers infra/.env (jamais commité).
+
+name: atlas
+
+services:
+  # ── Base de données géospatiale + vectorielle ─────────────────
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: atlas-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-atlas}
+      POSTGRES_USER: ${POSTGRES_USER:-atlas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?definir_dans_infra/.env}
+      # Locale FR pour les tris de toponymes
+      POSTGRES_INITDB_ARGS: "--locale=fr_FR.UTF-8 --encoding=UTF8"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-atlas} -d ${POSTGRES_DB:-atlas}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  # ── Cache & broker Celery ─────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: atlas-redis
+    command: ["redis-server", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  # ── Serveur de tuiles vectorielles (PostGIS → MVT) ────────────
+  martin:
+    image: ghcr.io/maplibre/martin:v0.14.2
+    container_name: atlas-martin
+    command: ["--listen-addresses", "0.0.0.0:3000"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-atlas}:${POSTGRES_PASSWORD:?}@db:5432/${POSTGRES_DB:-atlas}
+    ports:
+      - "${MARTIN_PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+
+  # ── LLM local (esprit ATLAS en développement) ─────────────────
+  # Après le premier démarrage :
+  #   docker exec atlas-ollama ollama pull qwen2.5:14b-instruct
+  # (ou llama3.1:8b-instruct-q5_K_M sur machine plus modeste)
+  ollama:
+    image: ollama/ollama:0.5.7
+    container_name: atlas-ollama
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    # GPU NVIDIA : décommenter le bloc ci-dessous
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  redis-data:
+  ollama-models:
