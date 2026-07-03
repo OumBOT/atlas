@@ -535,4 +535,5 @@ Journal :
 - **T-004** · Scaffold backend — ✅ validée (health ok sur Mac)
 - **T-005** · Design tokens — ✅ validée (vérifiée sur Mac)
 - **T-006** · CI GitHub Actions — ✅ validée (verte sur GitHub)
-- **T-007** · Seeds des 3 territoires — livrée, en attente de validation
+- **T-007** · Seeds des 3 territoires — ✅ validée (3 communes en base)
+- **T-008** · ADRs 001-003 — livrée · **E0 Fondations : terminé**
