@@ -215,7 +215,8 @@ atlas/
 │       └── tests/                    # unit / integration / e2e
 ├── infra/
 │   ├── docker-compose.yml            # pg+postgis, redis, martin, ollama
-│   └── ci/                           # GitHub Actions
+│   └── db/                           # image PostGIS+pgvector
+├── .github/workflows/                # CI GitHub Actions
 ├── docs/                             # ADRs, guides, ce document
 └── data/seeds/                       # communes de démo pré-chargées
 ```
@@ -532,4 +533,5 @@ Journal :
 - **T-002** · docker-compose — ✅ validée (testée sur Mac arm64)
 - **T-003** · Scaffold frontend — ✅ validée (testée sur Mac)
 - **T-004** · Scaffold backend — ✅ validée (health ok sur Mac)
-- **T-005** · Design tokens — livrée, en attente de validation
+- **T-005** · Design tokens — ✅ validée (vérifiée sur Mac)
+- **T-006** · CI GitHub Actions — livrée, en attente de validation
