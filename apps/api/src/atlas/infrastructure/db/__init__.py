@@ -23,9 +23,13 @@ class Base(DeclarativeBase):
 
 
 def create_engine() -> AsyncEngine:
-    """Crée l'engine async vers PostGIS (pool par défaut, echo en debug)."""
+    """Crée l'engine async vers PostGIS (pool par défaut).
+
+    L'écho SQL est volontairement désactivé (trop verbeux au quotidien) ;
+    le réactiver ponctuellement en passant ``echo=True`` ici.
+    """
     settings = get_settings()
-    return create_async_engine(settings.database_url, echo=settings.debug, pool_pre_ping=True)
+    return create_async_engine(settings.database_url, pool_pre_ping=True)
 
 
 # Engine et fabrique de sessions au niveau module : un seul pool par process.
