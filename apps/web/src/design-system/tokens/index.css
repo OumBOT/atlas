@@ -1,0 +1,117 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ATLAS — Design tokens
+   Source de vérité visuelle. Traduction directe de docs/IDENTITE.md.
+   Trois matières, rien d'autre : la NUIT (fonds), le VERRE (interface),
+   la LUMIÈRE (données & pensée d'ATLAS).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Typographies (IDENTITE §2.3) ─────────────────────────────────── */
+@import '@fontsource-variable/fraunces'; /* display — les atlas imprimés */
+@import '@fontsource-variable/inter'; /* interface */
+@import '@fontsource/ibm-plex-mono/400.css'; /* données, coordonnées */
+@import '@fontsource/ibm-plex-mono/500.css';
+
+@theme {
+  /* ── NUIT — fonds (IDENTITE §2.2) ──────────────────────────────── */
+  --color-void: #08090b; /* fond de scène (globe, carte) — jamais #000 */
+  --color-night-1: #0d0f13; /* fond application */
+  --color-night-2: #14171d; /* panneaux pleins */
+  --color-night-3: #1b1f27; /* éléments surélevés */
+
+  /* ── LUMIÈRE — texte & données ─────────────────────────────────── */
+  --color-ink-1: #edeef0; /* texte principal (le blanc pur est interdit) */
+  --color-ink-2: #9ba1ac; /* texte secondaire */
+  --color-ink-3: #5b6069; /* tertiaire, métadonnées */
+  --color-beam: #7aa2ff; /* le Méridien — la pensée d'ATLAS */
+  --color-beam-deep: #3d68e0; /* accent actionnable */
+  --color-data-warm: #e8b26b; /* réservé : le passé (Timeline), alertes douces */
+  --color-data-rose: #e07a8b; /* réservé : risques, dégradations */
+
+  /* ── Sémantique (états, toujours désaturés) ────────────────────── */
+  --color-ok: #6fbf9a;
+  --color-warn: #d9a96a;
+  --color-danger: #d97383;
+
+  /* ── Bordures du verre ─────────────────────────────────────────── */
+  --color-stroke-faint: rgb(255 255 255 / 0.05); /* défaut */
+  --color-stroke-soft: rgb(255 255 255 / 0.1); /* survol */
+  --color-stroke-lit: rgb(122 162 255 / 0.35); /* "pensée d'ATLAS" */
+
+  /* ── Typographies ──────────────────────────────────────────────── */
+  --font-display: 'Fraunces Variable', 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Échelle (IDENTITE : 11·12·13·15·18·22·28·40·64) */
+  --text-2xs: 0.6875rem; /* 11 — métadonnées */
+  --text-xs: 0.75rem; /* 12 */
+  --text-sm: 0.8125rem; /* 13 — corps UI par défaut */
+  --text-base: 0.9375rem; /* 15 */
+  --text-lg: 1.125rem; /* 18 */
+  --text-xl: 1.375rem; /* 22 */
+  --text-2xl: 1.75rem; /* 28 */
+  --text-3xl: 2.5rem; /* 40 — chiffres clés (Fraunces 300) */
+  --text-4xl: 4rem; /* 64 — display cinématique */
+
+  /* ── Rayons (§2.4 : la nuit n'a pas d'arêtes) ──────────────────── */
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-panel: 18px;
+
+  /* ── Ombres — deux couches : arête de verre + assise ───────────── */
+  --shadow-glass: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 64px -24px rgb(0 0 0 / 0.6);
+  --shadow-glass-raised: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 32px 80px -24px rgb(0 0 0 / 0.7);
+
+  /* ── Motion (IDENTITE §4.2) ────────────────────────────────────── */
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1); /* entrées, révélations */
+  --ease-depart: cubic-bezier(0.7, 0, 0.84, 0); /* sorties */
+  --ease-travel: cubic-bezier(0.65, 0, 0.35, 1); /* caméra, changements de vue */
+}
+
+/* ── Tokens hors namespace Tailwind (utilisés en CSS ou en arbitraire) ── */
+:root {
+  /* Verre (§2.6) — appliqué via la classe .glass ci-dessous */
+  --glass-panel: rgb(16 19 24 / 0.68);
+  --glass-raised: rgb(22 26 33 / 0.78);
+  --glass-blur: 28px;
+  --glass-blur-raised: 36px;
+
+  /* Halo de la pensée (§3.1) */
+  --beam-glow: 0 0 32px rgb(122 162 255 / 0.28);
+
+  /* Durées (§4.2) — via duration-[var(--dur-calm)] ou en CSS */
+  --dur-instant: 120ms;
+  --dur-quick: 240ms;
+  --dur-calm: 420ms;
+  --dur-scene: 800ms;
+  --dur-cinema: 2400ms;
+}
+
+/* ── Le verre — matière structurelle (§2.6) ───────────────────────
+   S'utilise TOUJOURS au-dessus d'une scène vivante, jamais sur aplat.
+   Maximum deux niveaux superposés. */
+.glass {
+  background: var(--glass-panel);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--color-stroke-faint);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-raised {
+  background: var(--glass-raised);
+  backdrop-filter: blur(var(--glass-blur-raised)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-raised)) saturate(140%);
+  border: 1px solid var(--color-stroke-soft);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-glass-raised);
+}
+
+/* Dégradation digne sans backdrop-filter (§2.6, règle 5) */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-raised {
+    background: rgb(20 23 29 / 0.96);
+  }
+}

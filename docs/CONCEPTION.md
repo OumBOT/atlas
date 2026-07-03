@@ -531,4 +531,5 @@ Journal :
 - **Phase 1** · Identité produit (docs/IDENTITE.md) — ✅ validée le 03/07/2026
 - **T-002** · docker-compose — ✅ validée (testée sur Mac arm64)
 - **T-003** · Scaffold frontend — ✅ validée (testée sur Mac)
-- **T-004** · Scaffold backend — livrée, en attente de validation
+- **T-004** · Scaffold backend — ✅ validée (health ok sur Mac)
+- **T-005** · Design tokens — livrée, en attente de validation
