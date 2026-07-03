@@ -529,4 +529,5 @@ Développement en cours selon le protocole : une tâche à la fois, terminée, d
 Journal :
 - **T-001** · Init monorepo — ✅ validée
 - **Phase 1** · Identité produit (docs/IDENTITE.md) — ✅ validée le 03/07/2026
-- **T-002** · docker-compose (PostGIS+pgvector, Redis, martin, Ollama) — livrée, en attente de validation
+- **T-002** · docker-compose — ✅ validée (testée sur Mac arm64)
+- **T-003** · Scaffold frontend — livrée, en attente de validation

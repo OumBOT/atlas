@@ -1,0 +1,22 @@
+/* ATLAS — feuille racine.
+   Tailwind v4 : la configuration du thème (tokens nuit/verre/lumière)
+   sera déclarée en @theme dans design-system/tokens (T-005). */
+@import 'tailwindcss';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #08090b; /* --void provisoire, remplacé par les tokens en T-005 */
+  color: #edeef0;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
