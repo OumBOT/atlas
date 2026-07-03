@@ -1,0 +1,46 @@
+# ── Node / Frontend ──────────────────────────────
+node_modules/
+dist/
+.vite/
+*.local
+.pnpm-store/
+
+# ── Python / Backend ─────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# ── Environnement / secrets ──────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Données lourdes (jamais versionnées) ─────────
+data/raw/
+data/cache/
+*.gpkg
+*.shp
+*.shx
+*.dbf
+*.prj
+*.tif
+*.laz
+*.las
+!data/seeds/**/*.geojson
+
+# ── IDE / OS ─────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ── Docker / logs ────────────────────────────────
+*.log
+docker-volumes/
