@@ -1,0 +1,4 @@
+# pnpm >= 11 : les réglages pnpm vivent ici (le .npmrc ne sert plus qu'à l'auth).
+# minimumReleaseAge (anti supply-chain) bloque les paquets publiés < 24h ;
+# désactivé en dev, à re-durcir (ex. 10080 = 7 jours) une fois les deps stabilisées.
+minimumReleaseAge: 0
