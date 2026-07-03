@@ -1,6 +1,7 @@
 /* ATLAS — feuille racine. Les tokens sont la source de vérité visuelle. */
 @import 'tailwindcss';
 @import '@/design-system/tokens/index.css';
+@import '@/design-system/motion/meridian.css';
 
 html,
 body,

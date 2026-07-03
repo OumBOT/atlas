@@ -1,0 +1,26 @@
+/* Le Méridien — la seule manifestation visuelle de la pensée d'ATLAS.
+   Un segment de lumière parcourt un périmètre (stroke-dash animé). */
+
+@keyframes meridian-travel {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.meridian-border-beam {
+  animation: meridian-travel var(--meridian-duration, 2.4s) linear infinite;
+}
+
+/* Mouvement réduit : plus de voyage, une respiration d'opacité. */
+@media (prefers-reduced-motion: reduce) {
+  .meridian-border-beam {
+    animation: meridian-breathe 2.4s ease-in-out infinite;
+    stroke-dasharray: 100 0 !important;
+    opacity: 0.35;
+  }
+  @keyframes meridian-breathe {
+    50% {
+      opacity: 0.12;
+    }
+  }
+}
