@@ -536,4 +536,9 @@ Journal :
 - **T-005** · Design tokens — ✅ validée (vérifiée sur Mac)
 - **T-006** · CI GitHub Actions — ✅ validée (verte sur GitHub)
 - **T-007** · Seeds des 3 territoires — ✅ validée (3 communes en base)
-- **T-008** · ADRs 001-003 — livrée · **E0 Fondations : terminé**
+- **T-008** · ADRs 001-003 — ✅ · **E0 Fondations : terminé**
+- **T-009** · Grammaire motion + famille Méridien (Line/Border/Text) — livrée
+- **T-010** · GlassPanel (2 niveaux, état thinking) — livrée
+- **T-011** · Button (primary/ghost/subtle, lueur au contact) — livrée
+- **T-012** · MetricTile (Fraunces count-up) — livrée
+- **T-013** · Galerie /design — livrée, en attente de validation visuelle
