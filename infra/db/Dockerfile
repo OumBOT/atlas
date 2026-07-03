@@ -1,6 +1,7 @@
-# ATLAS — PostgreSQL 16 + PostGIS 3.4 + pgvector
-# L'image officielle postgis/postgis n'inclut pas pgvector : on l'ajoute.
-FROM postgis/postgis:16-3.4
+# ATLAS — PostgreSQL 16 + PostGIS 3.5 + pgvector
+# Image multi-arch (amd64 + arm64/Apple Silicon) — l'officielle postgis/postgis est amd64 only.
+# Basée debian bookworm : pgvector s'installe via apt.
+FROM imresamu/postgis:16-3.5-bookworm
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \

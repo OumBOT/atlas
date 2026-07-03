@@ -4,7 +4,7 @@
 
 | Service | Port | Rôle |
 |---|---|---|
-| `db` | 5432 | PostgreSQL 16 + PostGIS 3.4 + pgvector (image custom `infra/db/Dockerfile`) |
+| `db` | 5432 | PostgreSQL 16 + PostGIS 3.5 + pgvector (image custom multi-arch, `infra/db/Dockerfile`) |
 | `redis` | 6379 | cache + broker Celery |
 | `martin` | 3000 | tuiles vectorielles MVT depuis PostGIS (schéma `tiles`) |
 | `ollama` | 11434 | LLM local (esprit ATLAS en dev) |
@@ -35,3 +35,11 @@ curl -s localhost:11434/api/tags                            # modèles ollama
   ne publier que des **vues** dans `tiles`, jamais les tables brutes.
 - GPU NVIDIA pour Ollama : décommenter le bloc `deploy` dans le compose.
 - CI : ce même compose (sans ollama) servira aux tests d'intégration (T-006).
+
+## Compatibilité Apple Silicon (arm64)
+
+La base s'appuie sur `imresamu/postgis` (build multi-arch du projet officiel
+docker-postgis) car `postgis/postgis` n'est publié qu'en amd64 et tourne en
+émulation sur Mac M1-M4 (lent, instable). Si le port 5432 est occupé par un
+Postgres local, définir `POSTGRES_PORT=5433` dans `infra/.env` — la valeur
+n'affecte que le port exposé sur la machine hôte.
