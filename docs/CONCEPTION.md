@@ -554,4 +554,7 @@ Journal :
 - **T-025** · Bâtiments 3D « la ville qui pousse » — ✅ validée (après chasse au conteneur 0px)
 - **E3 : terminé** (transition différée en E10 : couture caméra parfaite)
 - **T-026** · Moteur d'analyses sur grille (ST_SquareGrid, emprise + volume, normalisation) — livrée
-- **T-027** · Panneau Analyses : pensée Méridien, couche gradient, constat rédigé façon ATLAS — livrée, en attente de validation
+- **T-027** · Panneau Analyses — ✅ validée (règle rédactionnelle : plus de tirets cadratins)
+- **T-028** · Migration portraits + client LLM configurable (Ollama/API) + persona (charte en prompt) — livrée
+- **T-029** · Service Portrait : faits vérifiés → génération JSON strict → persistance, parsing dégradable — livrée
+- **T-030** · PortraitPanel : ATLAS parle en premier à l'ouverture, sections dépliables, régénération — livrée, en attente de validation

@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     # Frontend autorisé (CORS)
     cors_origins: list[str] = ["http://localhost:5173"]
 
+    # Moteur de langage (ADR-002) : Ollama en local par défaut,
+    # n'importe quelle API compatible OpenAI par simple configuration.
+    llm_base_url: str = "http://localhost:11434/v1"
+    llm_model: str = "qwen2.5:7b-instruct"
+    llm_api_key: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

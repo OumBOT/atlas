@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { dur, ease } from '@/design-system'
 import { AnalysisPanel } from '@/features/territory/AnalysisPanel'
+import { PortraitPanel } from '@/features/territory/PortraitPanel'
 import { boundaryUrl } from '@/lib/api'
 import type { TerritorySummary } from '@/lib/api'
 
@@ -283,6 +284,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
         <span className="font-mono text-2xs text-ink-3">⌘K</span>
       </motion.header>
 
+      {ready && <PortraitPanel territory={territory} />}
       {ready && <AnalysisPanel territory={territory} mapRef={mapRef} />}
 
       <div className="atlas-vignette" />
