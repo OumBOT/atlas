@@ -16,6 +16,8 @@ import { boundaryUrl } from '@/lib/api'
 import type { TerritorySummary } from '@/lib/api'
 
 const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json'
+const TILES_URL: string = import.meta.env['VITE_TILES_URL'] ?? 'http://localhost:3000'
+const GROW_DURATION_MS = 1600
 const TRACE_DURATION_MS = 1900
 
 interface TerritoryViewProps {
@@ -52,6 +54,22 @@ function geometryBounds(geometry: {
     [west, south],
     [east, north],
   ]
+}
+
+/** La ville qui pousse : les extrusions montent de 0 à leur hauteur. */
+function growBuildings(map: maplibregl.Map): void {
+  const start = performance.now()
+  const frame = (now: number) => {
+    const p = Math.min((now - start) / GROW_DURATION_MS, 1)
+    const eased = 1 - Math.pow(1 - p, 3) // easeOutCubic
+    map.setPaintProperty('buildings-3d', 'fill-extrusion-height', [
+      '*',
+      ['coalesce', ['get', 'height_m'], 5],
+      eased,
+    ])
+    if (p < 1) requestAnimationFrame(frame)
+  }
+  requestAnimationFrame(frame)
 }
 
 /** Le Méridien trace le périmètre : gradient animé le long de la ligne. */
@@ -151,7 +169,41 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
           essential: true,
         })
       }
+      // Le bâti (vue tiles.buildings servie par martin) — naît à plat, puis pousse
+      map.addSource('buildings', {
+        type: 'vector',
+        tiles: [`${TILES_URL}/buildings/{z}/{x}/{y}`],
+        minzoom: 12,
+        maxzoom: 16,
+      })
+      map.addLayer(
+        {
+          id: 'buildings-3d',
+          type: 'fill-extrusion',
+          source: 'buildings',
+          'source-layer': 'buildings',
+          minzoom: 12,
+          paint: {
+            'fill-extrusion-height': 0,
+            'fill-extrusion-color': [
+              'interpolate',
+              ['linear'],
+              ['coalesce', ['get', 'height_m'], 5],
+              4,
+              '#151a26',
+              20,
+              '#232e45',
+              60,
+              '#31415f',
+            ],
+            'fill-extrusion-opacity': 0.92,
+          },
+        },
+        'territory-glow', // le contour reste au-dessus du bâti
+      )
+
       window.setTimeout(() => traceBoundary(map), 500)
+      window.setTimeout(() => growBuildings(map), 1300)
       setReady(true)
     })
 

@@ -34,5 +34,8 @@ migrate:       ## applique les migrations de schéma
 seed:          ## charge les 3 territoires de démonstration
 	cd apps/api && .venv/bin/python -m atlas.infrastructure.db.seed_territories
 
+ingest:        ## ingère le bâti OSM d'un territoire : make ingest CODE=93066
+	cd apps/api && .venv/bin/python -m atlas.infrastructure.connectors.osm $(CODE)
+
 test:          ## tests backend
 	cd apps/api && .venv/bin/pytest -q

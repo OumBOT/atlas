@@ -547,4 +547,8 @@ Journal :
 - **T-018** · Cinématique + seuil + menu — ✅ validée (« c'est magnifique »)
 - **T-019** · API territoires (liste + contours GeoJSON) — livrée
 - **T-020** · Vue territoire MapLibre (basemap nuit, contour tracé au Méridien) — livrée
-- **T-021** · Piqué orbital globe→carte + palette peuplée par l'API — livrée, en attente de validation
+- **T-021** · Piqué orbital globe→carte — ✅ validée
+- **T-022** · Fondu de nuit entre les vues — ✅
+- **T-023** · Migration bâti OSM + vue tiles.buildings (martin) — livrée
+- **T-024** · Connecteur Overpass (ingestion par code INSEE, hauteurs estimées) — livrée
+- **T-025** · Bâtiments 3D fill-extrusion + « la ville qui pousse » — livrée, en attente de validation
