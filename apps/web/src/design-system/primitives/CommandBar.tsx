@@ -74,8 +74,18 @@ export function CommandBar({
       }
       if (event.key === 'Escape' && open) close()
     }
+    function onOpenEvent() {
+      if (!open) {
+        previousFocus.current = document.activeElement as HTMLElement
+        setOpen(true)
+      }
+    }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('atlas:open-commandbar', onOpenEvent)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('atlas:open-commandbar', onOpenEvent)
+    }
   }, [open, close])
 
   useEffect(() => {
