@@ -96,7 +96,7 @@ function narrate(metric: Metric, result: GridResult, territory: TerritorySummary
   const total = withData.reduce((acc, f) => acc + f.properties.volume_m3, 0)
   return (
     `Le volume bâti s'établit autour de ${(total / 1_000_000).toFixed(1)} millions de m³, ` +
-    `concentré ${direction}. Les hauteurs sont estimées — étages OSM, sinon 5 mètres — ` +
+    `concentré ${direction}. Les hauteurs sont estimées (étages OSM, sinon 5 mètres) : ` +
     `ce chiffre est un ordre de grandeur, pas un cadastre.`
   )
 }
@@ -182,7 +182,7 @@ export function AnalysisPanel({ territory, mapRef }: AnalysisPanelProps) {
       if (id !== requestId.current) return
       setThinking(null)
       setActive(null)
-      setNarrative("Le calcul n'a pas abouti — l'API est-elle démarrée ? Reprenons.")
+      setNarrative("Le calcul n'a pas abouti. L'API est-elle démarrée ? Reprenons.")
     }
   }
 

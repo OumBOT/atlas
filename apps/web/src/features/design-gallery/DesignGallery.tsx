@@ -65,8 +65,8 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 const PORTRAIT_SAMPLE =
-  'Saint-Denis concentre une croissance démographique soutenue — 149 077 habitants ' +
-  'au dernier recensement — portée par le Grand Paris et la fusion avec Pierrefitte. ' +
+  'Saint-Denis concentre une croissance démographique soutenue, 149 077 habitants ' +
+  'au dernier recensement, portée par le Grand Paris et la fusion avec Pierrefitte. ' +
   "Cette lecture s'appuie sur les données geo.api.gouv.fr ; elle ne capture pas les " +
   'programmes de logements en cours de livraison.'
 

@@ -25,7 +25,7 @@ const CAPTIONS: readonly { at: number; text: string }[] = [
 
 const WELCOME =
   "Je suis ATLAS. J'étudie les territoires : leur forme, leur population, leurs réseaux, " +
-  'leurs équilibres. Choisissez une commune — je vous en ferai le portrait.'
+  'leurs équilibres. Choisissez une commune : je vous en ferai le portrait.'
 
 interface IntroProps {
   /** Retour depuis un territoire : sauter le seuil, arriver au menu. */
