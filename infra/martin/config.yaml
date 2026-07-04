@@ -1,0 +1,10 @@
+# ATLAS — configuration martin (ADR-003)
+# Seules les VUES du schéma `tiles` sont publiées : le schéma `atlas`
+# (tables internes) ne sort jamais.
+listen_addresses: '0.0.0.0:3000'
+postgres:
+  connection_string: '${DATABASE_URL}'
+  auto_publish:
+    tables:
+      from_schemas:
+        - tiles

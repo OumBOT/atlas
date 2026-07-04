@@ -54,9 +54,11 @@ services:
   martin:
     image: ghcr.io/maplibre/martin:v0.14.2
     container_name: atlas-martin
-    command: ["--listen-addresses", "0.0.0.0:3000"]
+    command: ["--config", "/etc/martin/config.yaml"]
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-atlas}:${POSTGRES_PASSWORD:?}@db:5432/${POSTGRES_DB:-atlas}
+    volumes:
+      - ./martin/config.yaml:/etc/martin/config.yaml:ro
     ports:
       - "${MARTIN_PORT:-3000}:3000"
     depends_on:

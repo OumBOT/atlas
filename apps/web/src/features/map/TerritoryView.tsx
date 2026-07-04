@@ -173,7 +173,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
       map.addSource('buildings', {
         type: 'vector',
         tiles: [`${TILES_URL}/buildings/{z}/{x}/{y}`],
-        minzoom: 12,
+        minzoom: 10,
         maxzoom: 16,
       })
       map.addLayer(
@@ -182,7 +182,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
           type: 'fill-extrusion',
           source: 'buildings',
           'source-layer': 'buildings',
-          minzoom: 12,
+          minzoom: 11,
           paint: {
             'fill-extrusion-height': 0,
             'fill-extrusion-color': [
