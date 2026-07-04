@@ -23,7 +23,19 @@ from sqlalchemy import text
 
 from atlas.infrastructure.db import session_factory
 
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+# Miroirs en cascade : le serveur principal rejette parfois les clients
+# programmatiques (406 anti-bot depuis 2026) ; kumi.systems est la parade usuelle.
+OVERPASS_MIRRORS = (
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
+)
+
+# Étiquette Overpass : un client identifié (les UA anonymes sont bloqués).
+_HEADERS = {
+    "User-Agent": "ATLAS/0.1 (projet portfolio geomatique; github.com/OumBOT/atlas)",
+    "Accept": "application/json",
+}
 LEVEL_HEIGHT_M = 3.0
 DEFAULT_HEIGHT_M = 5.0
 
@@ -107,11 +119,19 @@ def parse_buildings(payload: dict[str, Any]) -> list[Building]:
 
 
 async def fetch_buildings(code_insee: str) -> list[Building]:
-    """Interroge Overpass pour le bâti de la commune."""
-    async with httpx.AsyncClient(timeout=240) as client:
-        response = await client.post(OVERPASS_URL, data={"data": _QUERY.format(code=code_insee)})
-        response.raise_for_status()
-        return parse_buildings(response.json())
+    """Interroge Overpass pour le bâti de la commune (miroirs en cascade)."""
+    query = _QUERY.format(code=code_insee)
+    last_error: httpx.HTTPError | None = None
+    async with httpx.AsyncClient(timeout=240, headers=_HEADERS) as client:
+        for mirror in OVERPASS_MIRRORS:
+            try:
+                response = await client.post(mirror, data={"data": query})
+                response.raise_for_status()
+                return parse_buildings(response.json())
+            except httpx.HTTPError as exc:
+                print(f"  · {mirror} indisponible ({exc}) — miroir suivant", file=sys.stderr)
+                last_error = exc
+    raise last_error if last_error else RuntimeError("Aucun miroir Overpass configuré")
 
 
 async def ingest(code_insee: str) -> int:
