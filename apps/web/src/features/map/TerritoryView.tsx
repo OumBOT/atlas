@@ -12,6 +12,7 @@ import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 
 import { dur, ease } from '@/design-system'
+import { AnalysisPanel } from '@/features/territory/AnalysisPanel'
 import { boundaryUrl } from '@/lib/api'
 import type { TerritorySummary } from '@/lib/api'
 
@@ -117,6 +118,7 @@ function traceBoundary(map: maplibregl.Map): void {
 
 export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<maplibregl.Map | null>(null)
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -133,6 +135,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
       attributionControl: { compact: true },
     })
 
+    mapRef.current = map
     let cancelled = false
 
     map.on('error', (event) => console.warn('[maplibre]', event.error?.message ?? event))
@@ -230,6 +233,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
 
     return () => {
       cancelled = true
+      mapRef.current = null
       map.remove()
     }
   }, [territory])
@@ -276,8 +280,10 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
             </span>
           )}
         </div>
-        <span className="font-mono text-2xs text-ink-3">carte v3 · ⌘K</span>
+        <span className="font-mono text-2xs text-ink-3">⌘K</span>
       </motion.header>
+
+      {ready && <AnalysisPanel territory={territory} mapRef={mapRef} />}
 
       <div className="atlas-vignette" />
       <div className="atlas-grain" />

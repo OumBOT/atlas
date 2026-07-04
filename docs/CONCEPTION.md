@@ -551,4 +551,7 @@ Journal :
 - **T-022** · Fondu de nuit entre les vues — ✅
 - **T-023** · Migration bâti OSM + vue tiles.buildings (martin) — livrée
 - **T-024** · Connecteur Overpass (ingestion par code INSEE, hauteurs estimées) — livrée
-- **T-025** · Bâtiments 3D fill-extrusion + « la ville qui pousse » — livrée, en attente de validation
+- **T-025** · Bâtiments 3D « la ville qui pousse » — ✅ validée (après chasse au conteneur 0px)
+- **E3 : terminé** (transition différée en E10 : couture caméra parfaite)
+- **T-026** · Moteur d'analyses sur grille (ST_SquareGrid, emprise + volume, normalisation) — livrée
+- **T-027** · Panneau Analyses : pensée Méridien, couche gradient, constat rédigé façon ATLAS — livrée, en attente de validation

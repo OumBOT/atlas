@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from atlas.config import get_settings
-from atlas.presentation.routers import health, territories
+from atlas.presentation.routers import analyses, health, territories
 
 
 def create_app() -> FastAPI:
@@ -28,6 +28,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(territories.router)
+    app.include_router(analyses.router)
     return app
 
 
