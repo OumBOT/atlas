@@ -5,3 +5,11 @@ packages:
 # pnpm >= 11 — minimumReleaseAge bloque les paquets publiés < 24h
 # (désactivé en dev, à re-durcir une fois les deps stabilisées).
 minimumReleaseAge: 0
+
+# Scripts d'installation autorisés.
+# pnpm 11 : allowBuilds (map). pnpm <= 10 : onlyBuiltDependencies (liste).
+# Chaque version ignore la clé qu'elle ne connaît pas.
+allowBuilds:
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild
