@@ -222,6 +222,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
         'territory-glow', // le contour reste au-dessus du bâti
       )
 
+      window.setTimeout(() => map.resize(), 80)
       window.setTimeout(() => traceBoundary(map), 500)
       window.setTimeout(() => growBuildings(map), 1300)
       setReady(true)
@@ -234,7 +235,10 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
   }, [territory])
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-void">
+    <div
+      className="overflow-hidden bg-void"
+      style={{ position: 'fixed', top: 0, right: 0, bottom: 0, left: 0 }}
+    >
       {/* Voile de traversée d'atmosphère : la carte naît dans la lumière */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-20 bg-[#8fb0ff]"
@@ -243,7 +247,10 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
         transition={{ duration: 1.1, ease: 'easeOut' }}
       />
 
-      <div ref={containerRef} className="absolute inset-0" />
+      <div
+        ref={containerRef}
+        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
+      />
 
       {/* Barre supérieure */}
       <motion.header
@@ -269,7 +276,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
             </span>
           )}
         </div>
-        <span className="font-mono text-2xs text-ink-3">⌘K</span>
+        <span className="font-mono text-2xs text-ink-3">carte v3 · ⌘K</span>
       </motion.header>
 
       <div className="atlas-vignette" />
