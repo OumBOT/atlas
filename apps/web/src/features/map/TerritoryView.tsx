@@ -234,7 +234,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
   }, [territory])
 
   return (
-    <div className="relative h-full overflow-hidden bg-void">
+    <div className="fixed inset-0 overflow-hidden bg-void">
       {/* Voile de traversée d'atmosphère : la carte naît dans la lumière */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-20 bg-[#8fb0ff]"

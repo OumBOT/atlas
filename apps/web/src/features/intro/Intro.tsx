@@ -127,7 +127,7 @@ export function Intro({ startAtMenu = false }: IntroProps) {
   }, [stage])
 
   return (
-    <div className="relative h-full overflow-hidden bg-void">
+    <div className="fixed inset-0 overflow-hidden bg-void">
       {/* La scène — toujours montée, la cinématique écrit dessus */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
