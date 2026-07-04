@@ -104,9 +104,10 @@ export function PortraitPanel({ territory }: { territory: TerritorySummary }) {
   )
 
   useEffect(() => {
+    const invalidate = requestId
     void load(false)
     return () => {
-      requestId.current++
+      invalidate.current++
     }
   }, [load])
 
