@@ -4,7 +4,6 @@
  * La palette ⌘K est peuplée par l'API ; ouvrir un territoire depuis le
  * globe déclenche le piqué orbital avant la bascule vers la carte.
  */
-import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { CommandBar } from '@/design-system'
@@ -87,26 +86,20 @@ function App() {
     )
   }
 
+  // NOTE : pas de wrapper animé autour des scènes plein écran — un parent
+  // avec transform/filter ferait du `fixed` un piège (containing block).
+  // Le fondu entre vues sera réintroduit par un voile superposé (E10).
   return (
     <>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={view.kind === 'territory' ? `t-${view.territory.code_insee}` : 'globe'}
-          className="h-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.7, ease: 'easeOut' } }}
-          exit={{ opacity: 0, transition: { duration: 0.45, ease: 'easeIn' } }}
-        >
-          {view.kind === 'globe' ? (
-            <Intro startAtMenu={view.returning} />
-          ) : (
-            <TerritoryView
-              territory={view.territory}
-              onBackToGlobe={() => setView({ kind: 'globe', returning: true })}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
+      {view.kind === 'globe' ? (
+        <Intro startAtMenu={view.returning} />
+      ) : (
+        <TerritoryView
+          key={view.territory.code_insee}
+          territory={view.territory}
+          onBackToGlobe={() => setView({ kind: 'globe', returning: true })}
+        />
+      )}
       <CommandBar items={commands} />
     </>
   )
