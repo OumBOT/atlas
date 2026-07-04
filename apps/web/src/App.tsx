@@ -4,6 +4,7 @@
  * La palette ⌘K est peuplée par l'API ; ouvrir un territoire depuis le
  * globe déclenche le piqué orbital avant la bascule vers la carte.
  */
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { CommandBar } from '@/design-system'
@@ -88,14 +89,24 @@ function App() {
 
   return (
     <>
-      {view.kind === 'globe' ? (
-        <Intro startAtMenu={view.returning} />
-      ) : (
-        <TerritoryView
-          territory={view.territory}
-          onBackToGlobe={() => setView({ kind: 'globe', returning: true })}
-        />
-      )}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={view.kind === 'territory' ? `t-${view.territory.code_insee}` : 'globe'}
+          className="h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.7, ease: 'easeOut' } }}
+          exit={{ opacity: 0, transition: { duration: 0.45, ease: 'easeIn' } }}
+        >
+          {view.kind === 'globe' ? (
+            <Intro startAtMenu={view.returning} />
+          ) : (
+            <TerritoryView
+              territory={view.territory}
+              onBackToGlobe={() => setView({ kind: 'globe', returning: true })}
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
       <CommandBar items={commands} />
     </>
   )
