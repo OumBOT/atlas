@@ -542,4 +542,6 @@ Journal :
 - **T-011** · Button (primary/ghost/subtle, lueur au contact) — livrée
 - **T-012** · MetricTile (Fraunces count-up) — livrée
 - **T-013** · Galerie /design v2 (atmosphère) — ✅ validée (option A : nuit + rapports papier, ADR-004)
-- **T-014** · CommandBar ⌘K (navigation clavier, filtrage accent-insensible, monde qui s'incline) — livrée
+- **T-014** · CommandBar ⌘K — ✅ validée
+- **T-015..T-017** · Moteur globe (côtes à la plume, Méridien, atmosphère, caméra) — livrées
+- **T-018** · Cinématique + seuil + menu — livrée, en attente de validation visuelle
