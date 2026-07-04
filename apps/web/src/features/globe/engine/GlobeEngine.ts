@@ -41,6 +41,15 @@ export class GlobeEngine {
   private atmosphereMaterial: THREE.ShaderMaterial
 
   private phase: GlobePhase = 'cinema'
+  private dive: {
+    startTheta: number
+    startPhi: number
+    targetTheta: number
+    targetPhi: number
+    time: number
+    duration: number
+    onDone: (() => void) | null
+  } | null = null
   private mode: CinemaMode = 'full'
   private cinemaTime = 0
   private menuTheta = THETA_FRANCE
@@ -232,6 +241,27 @@ export class GlobeEngine {
     if (this.phase === 'cinema') this.enterMenu()
   }
 
+  /**
+   * Le piqué orbital (IDENTITE §6) : la caméra descend vers le point
+   * (lon, lat) ; l'atmosphère s'épaissit à la traversée. onDone est
+   * appelé au moment de la bascule vers la carte.
+   */
+  diveTo(lon: number, lat: number, onDone: () => void): void {
+    if (this.phase !== 'menu') {
+      onDone()
+      return
+    }
+    this.dive = {
+      startTheta: this.menuTheta + this.pointerSmoothed.x,
+      startPhi: PHI_FRANCE + this.pointerSmoothed.y,
+      targetTheta: THREE.MathUtils.degToRad(90 - lon),
+      targetPhi: THREE.MathUtils.degToRad(90 - lat),
+      time: 0,
+      duration: 1.5,
+      onDone,
+    }
+  }
+
   private enterMenu(): void {
     this.phase = 'menu'
     this.coastMaterial.uniforms['uDraw']!.value = 1
@@ -295,6 +325,21 @@ export class GlobeEngine {
       this.setCameraSpherical(distance, theta, phi)
 
       if (t >= CINEMA.settleEnd) this.enterMenu()
+    } else if (this.dive) {
+      // Le piqué : descente orbitale, vitesse en cloche, atmosphère qui monte
+      const dive = this.dive
+      dive.time += dt
+      const p = THREE.MathUtils.smoothstep(dive.time / dive.duration, 0, 1)
+      const theta = THREE.MathUtils.lerp(dive.startTheta, dive.targetTheta, p)
+      const phi = THREE.MathUtils.lerp(dive.startPhi, dive.targetPhi, p)
+      const distance = THREE.MathUtils.lerp(MENU_DISTANCE, 1.28, p)
+      this.atmosphereMaterial.uniforms['uBoost']!.value = 1 + p * 2.2
+      this.setCameraSpherical(distance, theta, phi)
+      if (dive.time >= dive.duration) {
+        const done = dive.onDone
+        this.dive = null
+        done?.()
+      }
     } else {
       // Menu : orbite contemplative (≈ 1,15°/s) + parallaxe pointeur
       this.menuTheta += dt * 0.02

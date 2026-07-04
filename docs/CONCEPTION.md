@@ -544,4 +544,7 @@ Journal :
 - **T-013** · Galerie /design v2 (atmosphère) — ✅ validée (option A : nuit + rapports papier, ADR-004)
 - **T-014** · CommandBar ⌘K — ✅ validée
 - **T-015..T-017** · Moteur globe (côtes à la plume, Méridien, atmosphère, caméra) — livrées
-- **T-018** · Cinématique + seuil + menu — livrée, en attente de validation visuelle
+- **T-018** · Cinématique + seuil + menu — ✅ validée (« c'est magnifique »)
+- **T-019** · API territoires (liste + contours GeoJSON) — livrée
+- **T-020** · Vue territoire MapLibre (basemap nuit, contour tracé au Méridien) — livrée
+- **T-021** · Piqué orbital globe→carte + palette peuplée par l'API — livrée, en attente de validation

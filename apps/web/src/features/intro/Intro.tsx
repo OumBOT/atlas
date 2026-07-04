@@ -27,13 +27,18 @@ const WELCOME =
   "Je suis ATLAS. J'étudie les territoires : leur forme, leur population, leurs réseaux, " +
   'leurs équilibres. Choisissez une commune — je vous en ferai le portrait.'
 
-export function Intro() {
+interface IntroProps {
+  /** Retour depuis un territoire : sauter le seuil, arriver au menu. */
+  startAtMenu?: boolean
+}
+
+export function Intro({ startAtMenu = false }: IntroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const engineRef = useRef<GlobeEngine | null>(null)
   const timeoutsRef = useRef<number[]>([])
   const reduced = useReducedMotion()
 
-  const [stage, setStage] = useState<Stage>('threshold')
+  const [stage, setStage] = useState<Stage>(startAtMenu ? 'menu' : 'threshold')
   const [caption, setCaption] = useState<string | null>(null)
   const firstVisit = !localStorage.getItem(SEEN_KEY)
 
@@ -42,19 +47,21 @@ export function Intro() {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    const menuOnMount = startAtMenu // figé : la prop ne change pas après montage
     let alive = true
     let engine: GlobeEngine | null = null
     void import('@/features/globe/engine/GlobeEngine').then(({ GlobeEngine: Engine }) => {
       if (!alive) return
       engine = new Engine(canvas)
       engineRef.current = engine
+      if (menuOnMount) engine.start('reduced', () => undefined)
     })
     return () => {
       alive = false
       engine?.dispose()
       engineRef.current = null
     }
-  }, [])
+  }, [startAtMenu])
 
   const clearTimers = useCallback(() => {
     for (const id of timeoutsRef.current) window.clearTimeout(id)
@@ -103,6 +110,21 @@ export function Intro() {
   function openCommandBar() {
     window.dispatchEvent(new Event('atlas:open-commandbar'))
   }
+
+  /** Piqué orbital demandé par la palette (⌘K) — uniquement depuis le menu. */
+  useEffect(() => {
+    function onDive(event: Event) {
+      const { code, lon, lat } = (event as CustomEvent<{ code: string; lon: number; lat: number }>)
+        .detail
+      const engine = engineRef.current
+      if (!engine || stage !== 'menu') return
+      engine.diveTo(lon, lat, () => {
+        window.dispatchEvent(new CustomEvent('atlas:dive-complete', { detail: { code } }))
+      })
+    }
+    window.addEventListener('atlas:dive', onDive)
+    return () => window.removeEventListener('atlas:dive', onDive)
+  }, [stage])
 
   return (
     <div className="relative h-full overflow-hidden bg-void">
