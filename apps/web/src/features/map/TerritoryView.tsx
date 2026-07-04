@@ -72,29 +72,14 @@ function growBuildings(map: maplibregl.Map): void {
   requestAnimationFrame(frame)
 }
 
-/** Le Méridien trace le périmètre : gradient animé le long de la ligne. */
+/** Le Méridien trace le périmètre : gradient animé le long de la ligne.
+ *  Contrainte MapLibre : les stops d'un interpolate doivent être
+ *  STRICTEMENT croissants — chaque stop est donc borné après le précédent. */
 function traceBoundary(map: maplibregl.Map): void {
   const start = performance.now()
   const frame = (now: number) => {
     const p = Math.min((now - start) / TRACE_DURATION_MS, 1)
-    const head = Math.max(p, 0.001)
-    map.setPaintProperty('territory-boundary', 'line-gradient', [
-      'interpolate',
-      ['linear'],
-      ['line-progress'],
-      0,
-      'rgba(122, 162, 255, 0.95)',
-      Math.max(head - 0.06, 0.0001),
-      'rgba(122, 162, 255, 0.9)',
-      head,
-      'rgba(215, 228, 255, 1)',
-      Math.min(head + 0.002, 1),
-      'rgba(122, 162, 255, 0)',
-      1,
-      'rgba(122, 162, 255, 0)',
-    ])
-    if (p < 1) requestAnimationFrame(frame)
-    else
+    if (p >= 1) {
       map.setPaintProperty('territory-boundary', 'line-gradient', [
         'interpolate',
         ['linear'],
@@ -104,6 +89,27 @@ function traceBoundary(map: maplibregl.Map): void {
         1,
         'rgba(122, 162, 255, 0.9)',
       ])
+      return
+    }
+    const tail = Math.min(Math.max(p - 0.06, 0.0002), 0.995)
+    const head = Math.min(Math.max(p, tail + 0.001), 0.996)
+    const fade = head + 0.002
+    map.setPaintProperty('territory-boundary', 'line-gradient', [
+      'interpolate',
+      ['linear'],
+      ['line-progress'],
+      0,
+      'rgba(122, 162, 255, 0.95)',
+      tail,
+      'rgba(122, 162, 255, 0.9)',
+      head,
+      'rgba(215, 228, 255, 1)',
+      fade,
+      'rgba(122, 162, 255, 0)',
+      1,
+      'rgba(122, 162, 255, 0)',
+    ])
+    requestAnimationFrame(frame)
   }
   requestAnimationFrame(frame)
 }
@@ -127,6 +133,8 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
     })
 
     let cancelled = false
+
+    map.on('error', (event) => console.warn('[maplibre]', event.error?.message ?? event))
 
     map.on('load', async () => {
       const feature = (await (await fetch(boundaryUrl(territory.code_insee))).json()) as {
@@ -155,7 +163,18 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
         id: 'territory-boundary',
         type: 'line',
         source: 'territory',
-        paint: { 'line-width': 1.8, 'line-gradient': ['literal', 'rgba(0,0,0,0)'] as never },
+        paint: {
+          'line-width': 1.8,
+          'line-gradient': [
+            'interpolate',
+            ['linear'],
+            ['line-progress'],
+            0,
+            'rgba(0,0,0,0)',
+            1,
+            'rgba(0,0,0,0)',
+          ],
+        },
       })
 
       // La fin du piqué : la caméra se pose en assiette de travail
