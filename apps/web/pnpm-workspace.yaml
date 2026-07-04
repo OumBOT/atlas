@@ -1,7 +1,12 @@
-# Ce fichier sert de config pnpm pour apps/web (workspace mono-paquet).
+# Config pnpm du front (workspace mono-paquet).
 packages:
   - '.'
 
-# pnpm >= 11 : minimumReleaseAge (anti supply-chain) bloque les paquets < 24h.
-# Désactivé en dev ; à re-durcir (ex. 10080 = 7 jours) une fois les deps stabilisées.
+# pnpm >= 11 — protections supply-chain :
+# minimumReleaseAge bloque les paquets publiés < 24h (désactivé en dev,
+# à re-durcir une fois les deps stabilisées).
 minimumReleaseAge: 0
+
+# Scripts d'installation autorisés (liste blanche explicite).
+onlyBuiltDependencies:
+  - esbuild
