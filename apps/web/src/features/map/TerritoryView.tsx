@@ -67,6 +67,7 @@ function growBuildings(map: maplibregl.Map): void {
       ['coalesce', ['get', 'height_m'], 5],
       eased,
     ])
+    map.setPaintProperty('buildings-3d', 'fill-extrusion-opacity', Math.min(eased * 1.4, 0.92))
     if (p < 1) requestAnimationFrame(frame)
   }
   requestAnimationFrame(frame)
@@ -215,7 +216,7 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
               60,
               '#31415f',
             ],
-            'fill-extrusion-opacity': 0.92,
+            'fill-extrusion-opacity': 0,
           },
         },
         'territory-glow', // le contour reste au-dessus du bâti
