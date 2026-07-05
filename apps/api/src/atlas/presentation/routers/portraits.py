@@ -1,5 +1,6 @@
 """Le Portrait : ATLAS se présente le territoire (CONCEPTION §-1, principe 3)."""
 
+import dataclasses
 from typing import Annotated, Any
 
 import httpx
@@ -31,7 +32,7 @@ async def get_portrait(
     if not refresh:
         existing = await service.get(code_insee)
         if existing is not None:
-            return existing.__dict__
+            return dataclasses.asdict(existing)
 
     try:
         portrait = await service.generate(code_insee)
@@ -46,4 +47,4 @@ async def get_portrait(
 
     if portrait is None:
         raise HTTPException(status_code=404, detail="Territoire inconnu d'ATLAS.")
-    return portrait.__dict__
+    return dataclasses.asdict(portrait)

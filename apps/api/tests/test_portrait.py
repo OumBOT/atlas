@@ -33,3 +33,21 @@ def test_parse_portrait_degrades_to_raw_text() -> None:
     narrative, sections = parse_portrait("Le territoire est dense et contrasté.")
     assert narrative == "Le territoire est dense et contrasté."
     assert all(values == [] for values in sections.values())
+
+
+def test_portrait_dataclass_is_serializable() -> None:
+    """Portrait a slots=True : la sérialisation passe par dataclasses.asdict."""
+    import dataclasses
+
+    from atlas.infrastructure.mind.portrait import Portrait
+
+    portrait = Portrait(
+        narrative="Un territoire.",
+        sections={"forces": []},
+        facts={"nom": "Test"},
+        model="qwen2.5:7b-instruct",
+        generated_at="2026-07-04T00:00:00",
+    )
+    data = dataclasses.asdict(portrait)
+    assert data["narrative"] == "Un territoire."
+    assert data["model"] == "qwen2.5:7b-instruct"
