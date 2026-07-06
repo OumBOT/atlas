@@ -17,6 +17,7 @@ SAINT_DENIS = Territory(
     stats={"population": 149077, "surface_km2": 15.77},
     centroid_lon=2.3574,
     centroid_lat=48.9362,
+    buildings=18175,
 )
 
 
@@ -48,6 +49,7 @@ async def test_list_territories_exposes_stats_and_centroid() -> None:
             "name": "Saint-Denis",
             "population": 149077,
             "surface_km2": 15.77,
+            "buildings": 18175,
             "centroid": [2.3574, 48.9362],
         }
     ]

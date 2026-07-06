@@ -10,11 +10,12 @@ from atlas.infrastructure.db import session_factory
 
 _LIST = text(
     """
-    SELECT id, code_insee, name, stats_cache,
-           ST_X(ST_Centroid(boundary)) AS lon,
-           ST_Y(ST_Centroid(boundary)) AS lat
-    FROM atlas.territories
-    ORDER BY name
+    SELECT t.id, t.code_insee, t.name, t.stats_cache,
+           ST_X(ST_Centroid(t.boundary)) AS lon,
+           ST_Y(ST_Centroid(t.boundary)) AS lat,
+           (SELECT count(*) FROM atlas.osm_buildings b WHERE b.territory_id = t.id) AS buildings
+    FROM atlas.territories t
+    ORDER BY t.name
     """
 )
 
@@ -35,6 +36,7 @@ class PostGISTerritoryRepository:
                 stats=row.stats_cache,
                 centroid_lon=row.lon,
                 centroid_lat=row.lat,
+                buildings=int(row.buildings),
             )
             for row in rows
         ]

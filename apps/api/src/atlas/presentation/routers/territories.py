@@ -31,6 +31,7 @@ class TerritoryOut(BaseModel):
     name: str
     population: int | None = None
     surface_km2: float | None = None
+    buildings: int = 0
     centroid: tuple[float, float] = Field(description="[longitude, latitude]")
 
 
@@ -44,6 +45,7 @@ async def list_territories(repository: Repository) -> list[TerritoryOut]:
             name=t.name,
             population=t.stats.get("population"),
             surface_km2=t.stats.get("surface_km2"),
+            buildings=t.buildings,
             centroid=(t.centroid_lon, t.centroid_lat),
         )
         for t in territories

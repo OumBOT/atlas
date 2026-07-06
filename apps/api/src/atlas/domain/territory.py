@@ -15,6 +15,7 @@ class Territory:
     stats: dict[str, Any]
     centroid_lon: float
     centroid_lat: float
+    buildings: int = 0
 
 
 class TerritoryRepository(Protocol):
