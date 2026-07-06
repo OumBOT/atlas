@@ -13,6 +13,8 @@ import { useEffect, useRef, useState } from 'react'
 
 import { dur, ease } from '@/design-system'
 import { AnalysisPanel } from '@/features/territory/AnalysisPanel'
+import { ConverseDock } from '@/features/territory/ConverseDock'
+import { LearnBanner } from '@/features/territory/LearnBanner'
 import { PortraitPanel } from '@/features/territory/PortraitPanel'
 import { boundaryUrl } from '@/lib/api'
 import type { TerritorySummary } from '@/lib/api'
@@ -286,6 +288,25 @@ export function TerritoryView({ territory, onBackToGlobe }: TerritoryViewProps) 
 
       {ready && <PortraitPanel territory={territory} />}
       {ready && <AnalysisPanel territory={territory} mapRef={mapRef} />}
+      {ready && <ConverseDock territory={territory} />}
+      {ready && territory.buildings === 0 && (
+        <LearnBanner
+          territory={territory}
+          onLearned={() => {
+            const map = mapRef.current
+            if (!map) return
+            // Les tuiles viennent de changer : on force leur rechargement,
+            // puis la ville pousse.
+            const source = map.getSource('buildings')
+            if (source && 'setTiles' in source) {
+              ;(source as maplibregl.VectorTileSource).setTiles([
+                `${TILES_URL}/buildings/{z}/{x}/{y}`,
+              ])
+            }
+            window.setTimeout(() => growBuildings(map), 900)
+          }}
+        />
+      )}
 
       <div className="atlas-vignette" />
       <div className="atlas-grain" />

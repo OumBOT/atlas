@@ -7,6 +7,7 @@ export interface TerritorySummary {
   name: string
   population: number | null
   surface_km2: number | null
+  buildings: number
   centroid: [number, number]
 }
 

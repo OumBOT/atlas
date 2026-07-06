@@ -557,4 +557,7 @@ Journal :
 - **T-027** · Panneau Analyses — ✅ validée (règle rédactionnelle : plus de tirets cadratins)
 - **T-028** · Migration portraits + client LLM configurable (Ollama/API) + persona (charte en prompt) — livrée
 - **T-029** · Service Portrait : faits vérifiés → génération JSON strict → persistance, parsing dégradable — livrée
-- **T-030** · PortraitPanel : ATLAS parle en premier à l'ouverture, sections dépliables, régénération — livrée, en attente de validation
+- **T-030** · PortraitPanel — ✅ (bug slots/__dict__ corrigé, portrait généré en base)
+- **T-031** · Streaming LLM (SSE) + dialogue ancré aux faits, historique borné — livrée
+- **T-032** · Apprentissage du bâti depuis l'UI (tâche de fond 202 + statut sondable) — livrée
+- **T-033** · ConverseDock (flux en direct, suggestions) + LearnBanner (« Je ne connais pas encore le bâti d'ici ») — livrées, en attente de validation
